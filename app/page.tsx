@@ -1,5 +1,8 @@
 'use client';
 
+
+export const dynamic = 'force-dynamic';
+
 import { useState } from 'react';
 import { supabase } from '@/lib/supabase';
 
@@ -16,7 +19,6 @@ export default function Home() {
     setLoading(true);
     setErrorMsg('');
 
-    // 自動匹配 2AXX 免 Email 登入邏輯 (Auto-map username to internal email)
     const formattedEmail = `${username.trim().toLowerCase()}@school.local`;
 
     const { data, error } = await supabase.auth.signInWithPassword({
@@ -32,7 +34,6 @@ export default function Home() {
 
     if (data.user) {
       setUser(data.user);
-      // 讀取該成員的 Rank 權限 (Fetch user rank)
       const { data: profile } = await supabase
         .from('profiles')
         .select('rank')
